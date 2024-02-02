@@ -1,41 +1,88 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
 
 const dateTimePicker = document.getElementById('datetime-picker');
 const startTimerBtn = document.getElementById('start-timer');
+const timerFields = document.querySelectorAll('.timer [class="value"]');
 let countdownInterval;
+let userSelectedDate;
+
+// Flatpickr options
+const options = {
+    enableTime: true,
+    time_24hr: true,
+    defaultDate: new Date(),
+    minuteIncrement: 1,
+    onClose(selectedDates) {
+        userSelectedDate = selectedDates[0];
+        validateSelectedDate(userSelectedDate);
+    },
+};
+
+// Initialize Flatpickr
+flatpickr(dateTimePicker, options);
+
+function validateSelectedDate(selectedDate) {
+    const currentDate = new Date();
+    if (selectedDate < currentDate) {
+        startTimerBtn.disabled = true;
+        iziToast.error({
+            title: 'Error',
+            message: 'Please choose a date in the future',
+        });
+    } else {
+        startTimerBtn.disabled = false;
+    }
+}
 
 startTimerBtn.addEventListener('click', () => {
-    // Отримання вибраної дати та часу користувачем
-    const selectedDate = dateTimePicker.value;
+    const selectedDate = userSelectedDate;
     const targetDate = new Date(selectedDate).getTime();
 
-    // Запуск таймера зворотнього відліку
+    // Disable input and start button
+    dateTimePicker.disabled = true;
+    startTimerBtn.disabled = true;
+
     countdownInterval = setInterval(() => {
-        // Отримання поточної дати та часу
         const currentDate = new Date().getTime();
         const timeDifference = targetDate - currentDate;
-
-        // Розрахунок залишкового часу в мілісекундах та перетворення його у дні, години, хвилини і секунди
-        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
-        // Оновлення інтерфейсу таймера
+        if (timeDifference <= 0) {
+            clearInterval(countdownInterval);
+            updateTimerUI(0, 0, 0, 0);
+            iziToast.success({
+                title: 'Success',
+                message: 'Countdown finished!',
+            });
+            return;
+        }
+        const { days, hours, minutes, seconds } = convertMs(timeDifference);
         updateTimerUI(days, hours, minutes, seconds);
-    }, 1000); // Кожну секунду
+    }, 1000);
 });
 
 function updateTimerUI(days, hours, minutes, seconds) {
-    // Оновлення значень елементів інтерфейсу з відповідними класами
-    document.querySelector('[data-days]').textContent = formatTimeUnit(days);
-    document.querySelector('[data-hours]').textContent = formatTimeUnit(hours);
-    document.querySelector('[data-minutes]').textContent = formatTimeUnit(minutes);
-    document.querySelector('[data-seconds]').textContent = formatTimeUnit(seconds);
+    timerFields[0].textContent = addLeadingZero(days);
+    timerFields[1].textContent = addLeadingZero(hours);
+    timerFields[2].textContent = addLeadingZero(minutes);
+    timerFields[3].textContent = addLeadingZero(seconds);
 }
 
-function formatTimeUnit(unit) {
-    // Додавання нуля передоднішніх чисел, якщо вони менші за 10
-    return unit < 10 ? `0${unit}` : unit;
+function addLeadingZero(value) {
+    return value < 10 ? `0${value}` : value;
+}
+
+function convertMs(ms) {
+    const second = 1000;
+    const minute = second * 60;
+    const hour = minute * 60;
+    const day = hour * 24;
+
+    const days = Math.floor(ms / day);
+    const hours = Math.floor((ms % day) / hour);
+    const minutes = Math.floor(((ms % day) % hour) / minute);
+    const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+
+    return { days, hours, minutes, seconds };
 }

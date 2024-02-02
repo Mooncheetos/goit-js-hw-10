@@ -1,31 +1,220 @@
-* {
-    box-sizing: border-box;
-}
+:root {
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
 
-body {
-    margin: 16px;
-    line-height: 1.5;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    color: #242424;
+    background-color: rgba(255, 255, 255, 0.87);
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    padding-top: 10px;
+    -webkit-text-size-adjust: 100%;
+}
+
+.choice-container {
+    gap: 8px;
+    display: flex;
+    margin-bottom: 32px;
+}
+
+.input-field {
+    width: 272px;
+    height: 40px;
+    padding: 8px 16px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    border: 1px solid #808080;
+    color: #2e2f42;
+    font-family: Montserrat;
+    font-size: 16px;
+    line-height: 1.5em;
+    letter-spacing: 0.04px;
+    transition-duration: 250ms;
+    transition-property: border, color;
+    transition-timing-function: linear;
+}
+
+.input-field:hover {
+    border: 1px solid #000;
+}
+
+.input-field:active {
+    border: 1px solid #4e75ff;
+    color: #000;
+}
+
+.input-field:disabled {
+    border: 1px solid #808080;
+    color: #808080;
+}
+
+.start-btn {
+    width: 75px;
+    border: none;
+    border-radius: 8px;
+    background: #4e75ff;
+    color: #fff;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5em;
+    transition: background 250ms linear;
+}
+
+.start-btn:hover {
+    background: #6c8cff;
+}
+
+.start-btn:disabled {
+    background: #cfcfcf;
+}
+
+.timer {
+    display: flex;
+    gap: 24px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+.value {
+    color: #2e2f42;
+    font-family: Montserrat;
+    font-size: 40px;
+    line-height: 1.2em;
+    letter-spacing: 0.25px;
     text-align: center;
-    overflow: auto;
-    background-size: 400% 400%;
-    background-attachment: fixed;
 }
 
-input {
-    padding: 8px;
-    font: inherit;
+.label {
+    color: #2e2f42;
+    font-family: Montserrat;
+    font-size: 16px;
+    line-height: 1.5em;
+    text-transform: uppercase;
+    text-align: center;
 }
 
-button {
-    padding: 8px 12px;
-    cursor: pointer;
+/*=============snackbar============*/
+
+.input-delay {
+    width: 360px;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid #808080;
+    padding: 8px 16px;
+    box-sizing: border-box;
+    transition: border 250ms linear;
 }
 
-ul {
-    list-style: none;
+.input-delay:hover {
+    border: 1px solid #000;
+}
+
+.input-delay:focus-visible,
+.input-delay:active {
+    border: 1px solid #4e75ff;
+    outline: #4e75ff;
+}
+
+.form {
+    width: 360px;
+    color: #2e2f42;
+    font-family: Montserrat;
+    font-size: 16px;
+    line-height: 1.5em;
+    letter-spacing: 0.04px;
+}
+
+.delay-label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+fieldset {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    box-sizing: border-box;
+    margin: 0;
+    margin-bottom: 24px;
+    border-radius: 4px;
+    border: 1px solid #808080;
+    transition: border 250ms linear;
+}
+
+fieldset:hover,
+fieldset:focus,
+fieldset:active {
+    border: 1px solid #000;
+}
+
+.state-label {
+    width: 104px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    appearance: none;
+}
+
+.state-label input[type='radio']:checked {
+    color: #4e75ff;
+    background-color: #4e75ff;
+}
+
+.create-btn {
+    display: flex;
+    width: 360px;
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 8px;
+    background: #4e75ff;
+    color: #fff;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5em;
+    transition: background 250ms linear;
+}
+
+.create-btn:hover {
+    background: #6c8cff;
+}
+
+.btn-nav {
+    display: flex;
+    margin-bottom: 15px;
+    width: 80px;
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 8px;
+    background: #4e75ff;
+    color: #fff;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5em;
+    transition: background 250ms linear;
+}
+
+.btn-nav:hover {
+    background: #6c8cff;
+}
+
+.nav-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
