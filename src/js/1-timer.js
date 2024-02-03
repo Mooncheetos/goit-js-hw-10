@@ -3,11 +3,9 @@ import "flatpickr/dist/flatpickr.min.css";
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
-// Объявляем глобальные переменные
-let countdownInterval; // Интервал обратного отсчета
-let userSelectedDate; // Выбранная пользователем дата
+let countdownInterval;
+let userSelectedDate;
 
-// Инициализация flatpickr для поля выбора даты и времени
 const dateTimePicker = flatpickr("#datetime-picker", {
     enableTime: true,
     time_24hr: true,
@@ -19,7 +17,6 @@ const dateTimePicker = flatpickr("#datetime-picker", {
     },
 });
 
-// Проверка выбранной пользователем даты на корректность
 function validateSelectedDate(selectedDate) {
     const currentDate = new Date();
     const startTimerBtn = document.getElementById('start-timer');
@@ -34,25 +31,20 @@ function validateSelectedDate(selectedDate) {
     }
 }
 
-// Назначение обработчика события на кнопку "Start"
 document.getElementById('start-timer').addEventListener('click', () => {
     const selectedDate = userSelectedDate;
     const targetDate = new Date(selectedDate).getTime();
 
-    // Отключаем поле выбора даты и кнопку "Start"
     dateTimePicker.disabled = true;
     document.getElementById('start-timer').disabled = true;
 
-    // Запускаем интервал обратного отсчета
     countdownInterval = setInterval(updateTimerUI, 1000, targetDate);
 });
 
-// Функция обновления интерфейса таймера
 function updateTimerUI(targetDate) {
     const currentDate = new Date().getTime();
     const timeDifference = targetDate - currentDate;
 
-    // Проверяем, закончился ли таймер
     if (timeDifference <= 0) {
         clearInterval(countdownInterval);
         updateTimerDisplay(0, 0, 0, 0);
@@ -63,12 +55,10 @@ function updateTimerUI(targetDate) {
         return;
     }
 
-    // Конвертируем разницу времени в формат чч:мм:сс:мс и обновляем интерфейс
     const { days, hours, minutes, seconds } = convertMs(timeDifference);
     updateTimerDisplay(days, hours, minutes, seconds);
 }
 
-// Функция обновления отображения таймера
 function updateTimerDisplay(days, hours, minutes, seconds) {
     const timerFields = document.querySelectorAll('.timer [class="value"]');
     timerFields[0].textContent = addLeadingZero(days);
@@ -77,12 +67,10 @@ function updateTimerDisplay(days, hours, minutes, seconds) {
     timerFields[3].textContent = addLeadingZero(seconds);
 }
 
-// Функция добавления ведущего нуля к числу, если оно меньше 10
 function addLeadingZero(value) {
     return value < 10 ? `0${value}` : value;
 }
 
-// Функция конвертации миллисекунд в дни, часы, минуты и секунды
 function convertMs(ms) {
     const second = 1000;
     const minute = second * 60;
@@ -97,7 +85,6 @@ function convertMs(ms) {
     return { days, hours, minutes, seconds };
 }
 
-// Устанавливаем кнопку "Start" в неактивное состояние при загрузке страницы
 window.addEventListener('load', () => {
     const startTimerBtn = document.getElementById('start-timer');
     startTimerBtn.disabled = true;
