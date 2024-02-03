@@ -1,13 +1,13 @@
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
-document.getElementById('promise-form').addEventListener('submit', function(event) {
+document.querySelector('.form').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    // Отримання значення затримки та перетворення його на число
+    // Получаем значение задержки и преобразуем его в число
     const delay = Number(event.target.elements['delay'].value);
     
-    // Отримання обраного значення стану
+    // Получаем выбранное состояние
     const state = document.querySelector('input[name="state"]:checked').value;
 
     createPromise(delay, state)
@@ -29,9 +29,9 @@ function createPromise(delay, state) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             if (state === 'fulfilled') {
-                resolve();
+                resolve(delay); // Передаем значение задержки в resolve
             } else {
-                reject();
+                reject(delay); // Передаем значение задержки в reject
             }
         }, delay);
     });
